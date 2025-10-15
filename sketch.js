@@ -15,11 +15,11 @@ function preload() {
 }
 
 function setup() {
-  // slider = createSlider(0, 10, 0, 0);
-  // slider.position(10, 10);
-  // slider.size(100);
+  slider = createSlider(0, 10, 0, 0);
+  slider.position(300, 10);
+  slider.size(100);
 
-  createCanvas(400, 400);
+  createCanvas(1000, 700);
 
   // Rotation angle slider
   angleSlider = createSlider(0, TWO_PI, 0, 0.01);
@@ -28,8 +28,13 @@ function setup() {
 
   // Offset range slider
   offsetSlider = createSlider(0, imgSize / 2, imgSize / 4, 1);
-  offsetSlider.position(10, 40);
+  offsetSlider.position(10, 60);
   offsetSlider.size(100);
+
+  // shape4 radius slider
+  distanceSlider = createSlider(0,5,0,0.2);
+  distanceSlider.position(10,400);
+  distanceSlider.size(100);
 
   cols = width / imgSize;
   rows = height / imgSize;
@@ -40,6 +45,7 @@ function setup() {
 
 // organised, no control
 function shape1() {
+  let g = distanceSlider.value();
   translate(width / 2, height / 2);
 
   for (let i = 0; i < numPolygon; i++) {
@@ -48,8 +54,8 @@ function shape1() {
     let x = cos(angle) * radius;
     let y = sin(angle) * radius;
 
-    let x1 = cos(angle) * (3 * radius);
-    let y1 = sin(angle) * (3 * radius);
+    let x1 = cos(angle) * (g * radius);
+    let y1 = sin(angle) * (g * radius);
 
     push();
     translate(x, y);
@@ -179,13 +185,31 @@ function shape4() {
   }
 }
 
+// random placement - organised polygon
+function shape5() {
+  for (i=0; i<18; i++) {
+    push();
+    let x = random(0, width-20);
+    let y = random(0, height-20);
+    translate(x,y);
+    shape1();
+    pop();
+    
+  }
+   
+  
+
+}
+
 function draw() {
   background(0);
-  tint(255, 180);
+  tint(255, 100);
 
   randomSeed(0);
 
-  shape4();
+
+
+  // shape5();
 
 
 
