@@ -19,7 +19,7 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background("#0c4c04ff");
   translate(width / 2, height / 2);
 
   // draw all chosen layers
@@ -42,7 +42,7 @@ function drawLayer(layerIndex, shape) {
     push();
     translate(x, y);
     rotate(angle + 0.5 * PI);
-    image(shape, 0, 0, 180, 180);
+    image(shape, 0, 0, 160, 160);
     pop();
   }
 }
