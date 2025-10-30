@@ -4,37 +4,92 @@ let radius;
 let angle = 0;
 let numShape = 6;
 
+let buttons = [];
+let questionText = "How many in-person interactions have you had today?";
+let showQuestion = true;
+
+const questions = [
+  "How many in-person interactions have you had today?",
+  "How productive did you feel today?",
+  "How balanced was your day between work and rest?",
+  "How satisfied are you with your level of exercise today?",
+  "How enjoyable were your social interactions today?",
+  "How would you rate your overall mood today?",
+];
+
+let currentQuestionIndex = 0;
+questionText = questions[currentQuestionIndex];
+
 function setup() {
-  createCanvas(1080, 800);
-  background("#4ba554ff");
+  createCanvas(1920, 1080);
+  background("#D5D9CD");
   angleMode(RADIANS);
   rectMode(CORNERS);
   noStroke();
 
-// background circle 
+  // background circle
   centerButton = createButton("Add Center Circle");
   centerButton.position(20, 20);
   centerButton.mousePressed(drawCenterCircle);
 
-// alpha slider for transparency
-  alphaSlider = createSlider(0, 255, 255); 
+  // alpha slider for transparency
+  alphaSlider = createSlider(0, 255, 255);
   alphaSlider.position(20, 60);
 
-  //   myPicker = createColorPicker("white");
-  //   myPicker.position(0, 100);
+  // Create 4 answer buttons
+  const options = [
+    { label: "1-2 times", value: 1 },
+    { label: "10-20 times", value: 2 },
+    { label: "20-30 times", value: 3 },
+    { label: "30-40 times", value: 4 },
+  ];
+
+  // Position buttons in the center
+  let startX = 80;
+  let startY = height / 2 - 30;
+  let buttonSpacing = 60;
+
+for (let i = 0; i < options.length; i++) {
+  let btn = createButton(options[i].label);
+  btn.addClass("answer-btn"); // add CSS class
+  btn.position(startX, startY + i * buttonSpacing);
+  btn.mousePressed(() => handleAnswer(options[i].value));
+  buttons.push(btn);
+}
 }
 
-// function drawBackgrounds() {
-//   let c = myPicker.color();
-//   background(c);
-// }
+function draw() {
+  const textX = 160;
+  const textY = height / 2 - 150;
+  const maxTextWidth = width / 2 - 260;
+  const padding = 20;
 
+  // Always clear a consistent text zone (enough for long questions)
+  push();
+  noStroke();
+  fill("#D5D9CD"); // background color
+  rect(textX - padding, textY - 40, textX + maxTextWidth + padding, textY + 120);
+  pop();
+
+  // Draw question text if visible
+  if (showQuestion) {
+    push();
+    fill(255);
+    textSize(24);
+    textAlign(LEFT, TOP);
+    textWrap(WORD);
+    text(questionText, textX, textY, maxTextWidth, 200);
+    pop();
+  }
+}
 
 function drawCenterCircle() {
+  const centerX = width * 0.75;
+  const centerY = height / 2;
   push();
-  fill("#000000"); // color of center circle
+  fill("#000000");
   noStroke();
-  circle(width / 2, height / 2, 360); 
+  circle(centerX, centerY, 420);
   pop();
 }
 
@@ -47,7 +102,6 @@ function radiusIndex(radius, angle) {
 
 function drawTriangle() {
   push();
-  // fill removed
   polarTriangles(numShape, 50, radius);
   pop();
 }
@@ -70,13 +124,39 @@ function drawPolygon() {
   pop();
 }
 
+function handleAnswer(value) {
+  showQuestion = false; // hide question right after answering
+  buttons.forEach((btn) => btn.hide());
 
-function keyPressed() {
+  processInput(value); // draw the shape layer (keeps all previous ones)
+
+  // Move to next question if available
+  if (layer < 6 && currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    questionText = questions[currentQuestionIndex];
+
+    // Delay before showing next question (optional)
+    setTimeout(() => {
+      showQuestion = true;
+      buttons.forEach((btn) => btn.show());
+    }, 400);
+    // } else {
+    //   // End screen
+    //   fill(255);
+    //   textSize(28);
+    //   textAlign(CENTER);
+    //   text("Thank you for your responses!", width / 2, height / 2);
+  }
+}
+
+function processInput(key) {
+  const centerX = width * 0.75;
+  const centerY = height / 2;
   const keyMap = {
-    1: { func: drawCircle, color: "#0576bd", sizeOffset: [2, 2] },
-    2: { func: drawPetal, color: "#e9363a", sizeOffset: [2, 2] },
-    3: { func: drawTriangle, color: "#1d813b", sizeOffset: [2] },
-    4: { func: drawPolygon, color: "#639843ff", sizeOffset: [2] },
+    1: { func: drawCircle, color: "#BFE1E7", sizeOffset: [2, 2] },
+    2: { func: drawPetal, color: "#EBD394", sizeOffset: [2, 2] },
+    3: { func: drawTriangle, color: "#87A48D", sizeOffset: [2] },
+    4: { func: drawPolygon, color: "#db938eff", sizeOffset: [2] },
   };
 
   if (keyMap[key] && layer < maxLayers) {
@@ -84,17 +164,27 @@ function keyPressed() {
     const alphaVal = alphaSlider.value(); // get slider value
 
     push();
-    translate(width / 2, height / 2);
+    translate(centerX, centerY);
     rotate((layer * TWO_PI) / (numShape * 2));
 
     // Draw white underlayer with transparency
     push();
     radius = baseRadius;
-    fill(255, 255, 255, alphaVal); 
+    fill(255, 255, 255, alphaVal);
     if (key == 2) {
-      polarEllipses(numShape, 30 + keyMap[key].sizeOffset[0], 50 + keyMap[key].sizeOffset[1], radius);
+      polarEllipses(
+        numShape,
+        30 + keyMap[key].sizeOffset[0],
+        50 + keyMap[key].sizeOffset[1],
+        radius
+      );
     } else if (key == 1) {
-      polarEllipses(numShape, 50 + keyMap[key].sizeOffset[0], 50 + keyMap[key].sizeOffset[1], radius);
+      polarEllipses(
+        numShape,
+        50 + keyMap[key].sizeOffset[0],
+        50 + keyMap[key].sizeOffset[1],
+        radius
+      );
     } else if (key == 3) {
       polarTriangles(numShape, 50 + keyMap[key].sizeOffset[0], radius);
     } else if (key == 4) {
@@ -106,7 +196,7 @@ function keyPressed() {
     push();
     radius = baseRadius;
     let c = color(keyMap[key].color);
-    c.setAlpha(alphaVal); 
+    c.setAlpha(alphaVal);
     fill(c);
     keyMap[key].func();
     pop();
@@ -116,9 +206,16 @@ function keyPressed() {
 
     // small center circle (unaffected by slider)
     push();
-    fill("#fdf35f");
+    fill("#E3D780");
     noStroke();
-    circle(width / 2, height / 2, 50);
+    circle(centerX, centerY, 50);
     pop();
+  }
+}
+
+function keyPressed() {
+  // Keep keyboard functionality as backup
+  if (!showQuestion && (key == "1" || key == "2" || key == "3" || key == "4")) {
+    processInput(parseInt(key));
   }
 }
