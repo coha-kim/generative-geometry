@@ -3,79 +3,151 @@ const maxLayers = 7;
 let radius;
 let angle = 0;
 let numShape = 6;
+let buffer;
+let myFont;
+let saveBtn;
+let downloadPatternBtn;
 
 let buttons = [];
-let questionText = "How many in-person interactions have you had today?";
+let questionText = "";
 let showQuestion = true;
 
-const questions = [
-  "How many in-person interactions have you had today?",
-  "How productive did you feel today?",
-  "How balanced was your day between work and rest?",
-  "How satisfied are you with your level of exercise today?",
-  "How enjoyable were your social interactions today?",
-  "How would you rate your overall mood today?",
-];
-
+let questions = [];
+let questionOptions = [];
 let currentQuestionIndex = 0;
-questionText = questions[currentQuestionIndex];
+let userAnswers = []; // Track user's answers for each layer
+
+function preload() {
+  myFont = loadFont("assets/otf/Velvelyne-Regular.otf");
+}
 
 function setup() {
   createCanvas(1920, 1080);
-  background("#D5D9CD");
+  background("#F2F0F3");
   angleMode(RADIANS);
   rectMode(CORNERS);
   noStroke();
 
-  // background circle
-  centerButton = createButton("Add Center Circle");
-  centerButton.position(20, 20);
-  centerButton.mousePressed(drawCenterCircle);
+  textFont(myFont);
+  textSize(30);
+  fill(0);
+  
+  // Load questions and their options from HTML
+  const questionElements = document.querySelectorAll('#questions-container .question');
+  questions = Array.from(questionElements).map(el => el.textContent.trim());
+  questionOptions = Array.from(questionElements).map(el => {
+    const optionsData = el.getAttribute('data-options');
+    return optionsData ? JSON.parse(optionsData) : [];
+  });
+  questionText = questions[currentQuestionIndex] || "";
+  
+  // Create graphics buffer for all shapes
+  buffer = createGraphics(width, height);
+  buffer.angleMode(RADIANS);
+  buffer.rectMode(CORNERS);
+  buffer.noStroke();
+  buffer.clear(); 
 
-  // alpha slider for transparency
+   
+  // Automatically draw center circle at start
+  drawCenterCircle();
+
+  // alpha slider for transparency (initially hidden)
+  let sliderLabel = createP("Transparency"); 
+  sliderLabel.position(20, 30); 
+  sliderLabel.addClass("slider-label"); 
+  sliderLabel.hide();
+
   alphaSlider = createSlider(0, 255, 255);
-  alphaSlider.position(20, 60);
+  alphaSlider.position(20, 70); 
+  alphaSlider.addClass("alpha-slider");
+  alphaSlider.changed(redrawPatternWithNewAlpha); // Redraw when slider changes
+  alphaSlider.hide();
+  
+  // Download pattern button (initially hidden)
+  downloadPatternBtn = createButton("Download Pattern");
+  downloadPatternBtn.position(20, 20);
+  downloadPatternBtn.mousePressed(() => {
 
-  // Create 4 answer buttons
-  const options = [
-    { label: "1-2 times", value: 1 },
-    { label: "10-20 times", value: 2 },
-    { label: "20-30 times", value: 3 },
-    { label: "30-40 times", value: 4 },
-  ];
+    // Calculate the center coordinates
+    const centerX = width * 0.75;
+    const centerY = height / 2;
+    
+    // Calculate the radius that encompasses all layers
+    // The largest circle has radius 420/2 = 210
+    // The outermost layer shapes extend beyond this 
+    const maxShapeRadius = (maxLayers - 0) * 20; // 140
+    const totalRadius = 100 + maxShapeRadius;
+    
+    const cropSize = totalRadius * 2 -40; 
+    
+    // Calculate crop region (center minus half the size)
+    const cropX = centerX - (cropSize / 2);
+    const cropY = centerY - (cropSize / 2);
+    
+    // Use p5.js get() method directly on the buffer
+    const patternImg = buffer.get(cropX, cropY, cropSize, cropSize);
+    
+    // Save the image
+    save(patternImg, 'myPattern', 'png');
+  });
+  downloadPatternBtn.hide();
 
-  // Position buttons in the center
-  let startX = 80;
-  let startY = height / 2 - 30;
-  let buttonSpacing = 60;
-
-for (let i = 0; i < options.length; i++) {
-  let btn = createButton(options[i].label);
-  btn.addClass("answer-btn"); // add CSS class
-  btn.position(startX, startY + i * buttonSpacing);
-  btn.mousePressed(() => handleAnswer(options[i].value));
-  buttons.push(btn);
+  // Create answer buttons (will be updated for each question)
+  createAnswerButtons();
 }
+
+function createAnswerButtons() {
+  // Clear existing buttons
+  buttons.forEach(btn => btn.remove());
+  buttons = [];
+  
+  // Get options for current question
+  const options = questionOptions[currentQuestionIndex] || [];
+  
+  // Create buttons for current question's options
+  const startX = 140;
+  const startY = height / 2 - 30;
+  const buttonSpacing = 60;
+
+  for (let i = 0; i < options.length; i++) {
+    let btn = createButton(options[i].label);
+    btn.addClass("answer-btn");
+    btn.position(startX, startY + i * buttonSpacing);
+    btn.mousePressed(() => handleAnswer(options[i].value));
+    buttons.push(btn);
+  }
 }
 
 function draw() {
+  // Clear main canvas
+  background("#F2F0F3");
+  
+  // Draw the graphics buffer to the main canvas
+  image(buffer, 0, 0);
+  
   const textX = 160;
   const textY = height / 2 - 150;
   const maxTextWidth = width / 2 - 260;
   const padding = 20;
 
-  // Always clear a consistent text zone (enough for long questions)
+  // Clear previous question area
   push();
   noStroke();
-  fill("#D5D9CD"); // background color
-  rect(textX - padding, textY - 40, textX + maxTextWidth + padding, textY + 120);
+  fill("#F2F0F3");
+  rect(
+    textX - padding,
+    textY - 40,
+    textX + maxTextWidth + padding,
+    textY + 120
+  );
   pop();
 
   // Draw question text if visible
   if (showQuestion) {
     push();
-    fill(255);
-    textSize(24);
+    fill(0);
+    textSize(40);
     textAlign(LEFT, TOP);
     textWrap(WORD);
     text(questionText, textX, textY, maxTextWidth, 200);
@@ -86,11 +158,11 @@ function draw() {
 function drawCenterCircle() {
   const centerX = width * 0.75;
   const centerY = height / 2;
-  push();
-  fill("#000000");
-  noStroke();
-  circle(centerX, centerY, 420);
-  pop();
+  buffer.push();
+  buffer.fill("#000000");
+  buffer.noStroke();
+  buffer.circle(centerX, centerY, 420);
+  buffer.pop();
 }
 
 function radiusIndex(radius, angle) {
@@ -101,51 +173,77 @@ function radiusIndex(radius, angle) {
 }
 
 function drawTriangle() {
-  push();
-  polarTriangles(numShape, 50, radius);
-  pop();
+  buffer.push();
+  buffer.polarTriangles(numShape, 50, radius);
+  buffer.pop();
 }
 
 function drawCircle() {
-  push();
-  polarEllipses(numShape, 50, 50, radius);
-  pop();
+  buffer.push();
+  buffer.polarEllipses(numShape, 50, 50, radius);
+  buffer.pop();
 }
 
 function drawPetal() {
-  push();
-  polarEllipses(numShape, 30, 50, radius);
-  pop();
+  buffer.push();
+  buffer.polarEllipses(numShape, 30, 50, radius);
+  buffer.pop();
 }
 
 function drawPolygon() {
-  push();
-  polarPolygons(numShape, 4, 65, radius);
-  pop();
+  buffer.push();
+  buffer.polarPolygons(numShape, 4, 65, radius);
+  buffer.pop();
 }
 
 function handleAnswer(value) {
-  showQuestion = false; // hide question right after answering
+  showQuestion = false;
   buttons.forEach((btn) => btn.hide());
 
-  processInput(value); // draw the shape layer (keeps all previous ones)
+  // Store the answer and process it
+  userAnswers.push(value);
+  processInput(value);
 
   // Move to next question if available
   if (layer < 6 && currentQuestionIndex < questions.length - 1) {
     currentQuestionIndex++;
     questionText = questions[currentQuestionIndex];
+    
+    // Update buttons for the new question
+    createAnswerButtons();
 
-    // Delay before showing next question (optional)
     setTimeout(() => {
       showQuestion = true;
       buttons.forEach((btn) => btn.show());
     }, 400);
-    // } else {
-    //   // End screen
-    //   fill(255);
-    //   textSize(28);
-    //   textAlign(CENTER);
-    //   text("Thank you for your responses!", width / 2, height / 2);
+  } else {
+    // End screen
+    fill(0);
+    textSize(28);
+    textAlign(LEFT);
+    text("Shape of 10th Jan, 2025", 120, height / 2);
+    downloadPatternBtn.show();
+    alphaSlider.show();
+    sliderLabel.show();
+  }
+}
+
+function redrawPatternWithNewAlpha() {
+  // Only redraw if questions are complete
+  if (userAnswers.length >= 6) {
+    // Clear the buffer and redraw everything
+    buffer.clear();
+    
+    // Redraw center circle
+    drawCenterCircle();
+    
+    // Redraw all layers with new alpha
+    const tempLayer = layer; // Save current layer
+    layer = 0; // Reset layer counter
+    for (let i = 0; i < userAnswers.length; i++) {
+      processInput(userAnswers[i]);
+    }
+    layer = tempLayer; // Restore layer counter
   }
 }
 
@@ -153,63 +251,63 @@ function processInput(key) {
   const centerX = width * 0.75;
   const centerY = height / 2;
   const keyMap = {
-    1: { func: drawCircle, color: "#BFE1E7", sizeOffset: [2, 2] },
-    2: { func: drawPetal, color: "#EBD394", sizeOffset: [2, 2] },
-    3: { func: drawTriangle, color: "#87A48D", sizeOffset: [2] },
-    4: { func: drawPolygon, color: "#db938eff", sizeOffset: [2] },
+    1: { func: drawCircle, color: "#C62B0E", sizeOffset: [2, 2] },
+    2: { func: drawPetal, color: "#E3D780", sizeOffset: [2, 2] },
+    3: { func: drawTriangle, color: "#404883", sizeOffset: [2] },
+    4: { func: drawPolygon, color: "#87B564", sizeOffset: [2] },
   };
 
   if (keyMap[key] && layer < maxLayers) {
     const baseRadius = (maxLayers - layer) * 20;
-    const alphaVal = alphaSlider.value(); // get slider value
+    const alphaVal = alphaSlider.value();
 
-    push();
-    translate(centerX, centerY);
-    rotate((layer * TWO_PI) / (numShape * 2));
+    buffer.push();
+    buffer.translate(centerX, centerY);
+    buffer.rotate((layer * TWO_PI) / (numShape * 2));
 
     // Draw white underlayer with transparency
-    push();
+    buffer.push();
     radius = baseRadius;
-    fill(255, 255, 255, alphaVal);
+    buffer.fill(255, 255, 255, alphaVal);
     if (key == 2) {
-      polarEllipses(
+      buffer.polarEllipses(
         numShape,
         30 + keyMap[key].sizeOffset[0],
         50 + keyMap[key].sizeOffset[1],
         radius
       );
     } else if (key == 1) {
-      polarEllipses(
+      buffer.polarEllipses(
         numShape,
         50 + keyMap[key].sizeOffset[0],
         50 + keyMap[key].sizeOffset[1],
         radius
       );
     } else if (key == 3) {
-      polarTriangles(numShape, 50 + keyMap[key].sizeOffset[0], radius);
+      buffer.polarTriangles(numShape, 50 + keyMap[key].sizeOffset[0], radius);
     } else if (key == 4) {
-      polarPolygons(numShape, 4, 65 + keyMap[key].sizeOffset[0], radius);
+      buffer.polarPolygons(numShape, 4, 65 + keyMap[key].sizeOffset[0], radius);
     }
-    pop();
+    buffer.pop();
 
     // Draw main colored shape with transparency
-    push();
+    buffer.push();
     radius = baseRadius;
     let c = color(keyMap[key].color);
     c.setAlpha(alphaVal);
-    fill(c);
+    buffer.fill(c);
     keyMap[key].func();
-    pop();
+    buffer.pop();
 
-    pop();
+    buffer.pop();
     layer++;
 
     // small center circle (unaffected by slider)
-    push();
-    fill("#E3D780");
-    noStroke();
-    circle(centerX, centerY, 50);
-    pop();
+    buffer.push();
+    buffer.fill("#e7c936ff");
+    buffer.noStroke();
+    buffer.circle(centerX, centerY, 50);
+    buffer.pop();
   }
 }
 
