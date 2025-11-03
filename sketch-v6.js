@@ -11,11 +11,14 @@ let downloadPatternBtn;
 let buttons = [];
 let questionText = "";
 let showQuestion = true;
+let allQuestionsAnswered = false;
 
 let questions = [];
 let questionOptions = [];
 let currentQuestionIndex = 0;
 let userAnswers = []; // Track user's answers for each layer
+let dateString = ""; // Will store formatted date
+let sliderDescription;
 
 function preload() {
   myFont = loadFont("assets/otf/Velvelyne-Regular.otf");
@@ -41,6 +44,11 @@ function setup() {
   });
   questionText = questions[currentQuestionIndex] || "";
   
+  // Generate date string for today
+  const today = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  dateString = today.toLocaleDateString('en-US', options);
+  
   // Create graphics buffer for all shapes
   buffer = createGraphics(width, height);
   buffer.angleMode(RADIANS);
@@ -53,20 +61,21 @@ function setup() {
   drawCenterCircle();
 
   // alpha slider for transparency (initially hidden)
-  let sliderLabel = createP("Transparency"); 
-  sliderLabel.position(20, 30); 
-  sliderLabel.addClass("slider-label"); 
-  sliderLabel.hide();
+  sliderDescription = createP("Slide to adjust the transparency");
+  sliderDescription.position(120, height / 2 + 40);
+  sliderDescription.addClass("slider-description");
+  sliderDescription.hide();
 
   alphaSlider = createSlider(0, 255, 255);
-  alphaSlider.position(20, 70); 
+  alphaSlider.position(120, height / 2 + 90); 
   alphaSlider.addClass("alpha-slider");
   alphaSlider.changed(redrawPatternWithNewAlpha); // Redraw when slider changes
   alphaSlider.hide();
   
   // Download pattern button (initially hidden)
   downloadPatternBtn = createButton("Download Pattern");
-  downloadPatternBtn.position(20, 20);
+  downloadPatternBtn.position(120, height / 2 + 140);
+  downloadPatternBtn.addClass("download-btn");
   downloadPatternBtn.mousePressed(() => {
 
     // Calculate the center coordinates
@@ -153,6 +162,16 @@ function draw() {
     text(questionText, textX, textY, maxTextWidth, 200);
     pop();
   }
+  
+  // Draw end screen text if all questions are answered
+  if (allQuestionsAnswered) {
+    push();
+    fill(0);
+    textSize(40);
+    textAlign(LEFT);
+    text("Shape of " + dateString, 120, height / 2);
+    pop();
+  }
 }
 
 function drawCenterCircle() {
@@ -218,13 +237,10 @@ function handleAnswer(value) {
     }, 400);
   } else {
     // End screen
-    fill(0);
-    textSize(28);
-    textAlign(LEFT);
-    text("Shape of 10th Jan, 2025", 120, height / 2);
+    allQuestionsAnswered = true;
     downloadPatternBtn.show();
     alphaSlider.show();
-    sliderLabel.show();
+    sliderDescription.show();
   }
 }
 

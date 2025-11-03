@@ -67,15 +67,27 @@ canvas {
   color: #cee2b7;
 }
 
+.download-btn {
+  font-family: "Velvelyne";
+  font-size: 1.25rem;
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  transition: all 0.2s ease;
+}
 
-
+.download-btn:hover {
+  text-decoration: underline;
+}
 
 /* ---------SLIDER STYLING--------------- */
 
 .alpha-slider {
-  width: 140px;
+  width: 300px;
   background-color: transparent;
-  padding: 20px;
+  padding: 20px 0;
 
   
   /* Removes some defaults */
@@ -91,7 +103,7 @@ canvas {
 /* This is the "track" that the slider sits on  */
 .alpha-slider::-webkit-slider-runnable-track {
   background: #000000;
-  height: 2px;
+  height: 3px;
   -webkit-appearance: none;
   
   cursor: pointer;
@@ -115,13 +127,21 @@ canvas {
 }
 
 
+.slider-description {
+  font-family: "Velvelyne", sans-serif;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-bottom: 4px;
+  padding-left: 0px;
+}
+
 .slider-label {
   font-family: "Velvelyne", sans-serif;
   font-size: 1.2rem;
   color: #000000;
   margin-bottom: 4px;
   padding-top: 26px;
-  padding-left: 20px;
+  padding-left: 0px;
 }
 
 
