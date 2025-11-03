@@ -82,59 +82,6 @@ canvas {
   text-decoration: underline;
 }
 
-/* ---------SLIDER STYLING--------------- */
-
-.alpha-slider {
-  width: 300px;
-  background-color: transparent;
-  padding: 20px 0;
-
-  
-  /* Removes some defaults */
-  -webkit-appearance: none;
-  appearance: none;
-  
-}
-
-.alpha-slider:focus {
-  outline: none;
-}
-
-/* This is the "track" that the slider sits on  */
-.alpha-slider::-webkit-slider-runnable-track {
-  background: #000000;
-  height: 3px;
-  -webkit-appearance: none;
-  
-  cursor: pointer;
-}
-
-/* This is the moveable bit of the slider, known as the "thumb"*/
-.alpha-slider::-webkit-slider-thumb {
-  width: 15px;
-  height: 15px;
-  background: #000000;
-  cursor: pointer;
-  -webkit-appearance: none;
-  
-  /* negative top padding moves it up */
-  margin-top: -6px;
-
-  
-  /* Border radius gives rounded corners, if they're big enough, you end up with circles */
-  border-radius: 2px;
-  
-}
-
-
-.slider-description {
-  font-family: "Velvelyne", sans-serif;
-  font-size: 1.5rem;
-  color: #000000;
-  margin-bottom: 4px;
-  padding-left: 0px;
-}
-
 .slider-label {
   font-family: "Velvelyne", sans-serif;
   font-size: 1.2rem;
