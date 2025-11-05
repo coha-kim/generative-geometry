@@ -140,8 +140,8 @@ function setup() {
     
     localStorage.setItem('shapeOfDaysPatterns', JSON.stringify(patterns));
     
-    // Show confirmation
-    alert('Pattern added to collection!');
+    // Redirect to stats page
+    window.location.href = 'stats.html';
   });
   addToCollectionBtn.hide();
 
