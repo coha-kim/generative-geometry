@@ -15,11 +15,16 @@ body {
 
 canvas {
   display: block;
+  z-index: 1;
 }
 
 
 
 /* ---------TEXT STYLING--------------- */
+
+#questions-container {
+    display: none;
+}
 
 .question {
     font-family: 'Velvelyne', sans-serif;
@@ -90,5 +95,4 @@ canvas {
   padding-top: 26px;
   padding-left: 0px;
 }
-
 

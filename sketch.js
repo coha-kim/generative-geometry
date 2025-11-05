@@ -7,6 +7,7 @@ let buffer;
 let myFont;
 let saveBtn;
 let downloadPatternBtn;
+let addToCollectionBtn;
 
 let buttons = [];
 let questionText = "";
@@ -64,7 +65,6 @@ function setup() {
   downloadPatternBtn.position(120, height / 2 + 60); // 40px (textSize) + 20px gap
   downloadPatternBtn.addClass("download-btn");
   downloadPatternBtn.mousePressed(() => {
-
     // Calculate the center coordinates
     const centerX = width * 0.75;
     const centerY = height / 2;
@@ -75,19 +75,75 @@ function setup() {
     const maxShapeRadius = (maxLayers - 0) * 20; // 140
     const totalRadius = 100 + maxShapeRadius;
     
-    const cropSize = totalRadius * 2 -40; 
+    const cropSize = totalRadius * 2 - 40; 
     
     // Calculate crop region (center minus half the size)
     const cropX = centerX - (cropSize / 2);
     const cropY = centerY - (cropSize / 2);
     
-    // Use p5.js get() method directly on the buffer
-    const patternImg = buffer.get(cropX, cropY, cropSize, cropSize);
+    // Create a new graphics buffer with exact crop size
+    const patternBuffer = createGraphics(cropSize, cropSize);
+    patternBuffer.angleMode(RADIANS);
+    patternBuffer.rectMode(CORNERS);
+    patternBuffer.noStroke();
+    
+    // Copy the cropped region from main buffer to pattern buffer
+    patternBuffer.image(buffer, -cropX, -cropY);
+    
+    // Get the pattern image from the pattern buffer
+    const patternImg = patternBuffer.get(0, 0, cropSize, cropSize);
     
     // Save the image
     save(patternImg, 'myPattern', 'png');
   });
   downloadPatternBtn.hide();
+
+  // Add to Collection button (initially hidden)
+  addToCollectionBtn = createButton("Add to Collection");
+  addToCollectionBtn.position(120, height / 2 + 120); // Below download button
+  addToCollectionBtn.addClass("download-btn");
+  addToCollectionBtn.mousePressed(() => {
+    // Calculate the center coordinates (same as download button)
+    const centerX = width * 0.75;
+    const centerY = height / 2;
+    
+    // Calculate the radius that encompasses all layers
+    const maxShapeRadius = (maxLayers - 0) * 20;
+    const totalRadius = 100 + maxShapeRadius;
+    const cropSize = totalRadius * 2 - 40;
+    
+    // Calculate crop region
+    const cropX = centerX - (cropSize / 2);
+    const cropY = centerY - (cropSize / 2);
+    
+    // Create a new graphics buffer with exact crop size
+    const patternBuffer = createGraphics(cropSize, cropSize);
+    patternBuffer.angleMode(RADIANS);
+    patternBuffer.rectMode(CORNERS);
+    patternBuffer.noStroke();
+    
+    // Copy the cropped region from main buffer to pattern buffer
+    patternBuffer.image(buffer, -cropX, -cropY);
+    
+    // Get PNG data URL directly from the pattern buffer's canvas
+    const imageDataUrl = patternBuffer.canvas.toDataURL('image/png');
+    
+    // Save to localStorage
+    const savedPatterns = localStorage.getItem('shapeOfDaysPatterns');
+    const patterns = savedPatterns ? JSON.parse(savedPatterns) : [];
+    
+    patterns.push({
+      imageData: imageDataUrl,
+      date: dateString,
+      timestamp: Date.now()
+    });
+    
+    localStorage.setItem('shapeOfDaysPatterns', JSON.stringify(patterns));
+    
+    // Show confirmation
+    alert('Pattern added to collection!');
+  });
+  addToCollectionBtn.hide();
 
   // Create answer buttons (will be updated for each question)
   createAnswerButtons();
@@ -226,6 +282,9 @@ function handleAnswer(value) {
     // End screen
     allQuestionsAnswered = true;
     downloadPatternBtn.show();
+    downloadPatternBtn.position(120, height / 2 + 60);
+    addToCollectionBtn.show();
+    addToCollectionBtn.position(120, height / 2 + 120);
   }
 }
 
