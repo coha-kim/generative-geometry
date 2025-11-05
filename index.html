@@ -6,36 +6,24 @@
 
     <title>Shape of days</title>
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
-
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./onboarding.css" />
     <link rel="stylesheet" href="https://use.typekit.net/nsn1bkc.css">
   </head>
 
-  <body>
-    <div id="questions-container">
-      <div class="question" data-options='[{"label":"1. Restless and sluggish","value":1},{"label":"2. Wish I&apos;d moved more or less","value":2},{"label":"3. About right for me","value":3},{"label":"4. What I needed","value":4}]'>
-        How satisfied are you with the level of physical activity today?
+  <body style="margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;">
+    <!-- Onboarding Screen -->
+    <div id="onboarding-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #202020;">
+      <div class="onboarding-shapes">
+        <img src="assets/circle.svg" alt="Circle" class="shape shape-circle">
+        <img src="assets/ellipse.svg" alt="Ellipse" class="shape shape-ellipse">
+        <img src="assets/triangle.svg" alt="Triangle" class="shape shape-triangle">
+        <img src="assets/square.svg" alt="Square" class="shape shape-square">
       </div>
-      <div class="question" data-options='[{"label":"1. Barely opened any apps","value":1},{"label":"2. A few quick checks","value":2},{"label":"3. Regular browsing","value":3},{"label":"4. Lost some time scrolling","value":4}]'>
-        How often did you check social media today?
-      </div>
-      <div class="question" data-options='[{"label":"1. Drained or disconnected","value":1},{"label":"2. Awkward or surface-level","value":2},{"label":"3. Warm and engaging","value":3},{"label":"4. Energised and deeply connected ","value":4}]'>
-        Rate the enjoyment of your social interactions today
-      </div>
-      <div class="question" data-options='[{"label":"1. One completely took over","value":1},{"label":"2. Leaned way too much on one direction","value":2},{"label":"3. Some space for work and downtime","value":3},{"label":"4. Perfectly balanced","value":4}]'>
-        How well did you balance work and leisure today?
-      </div>
-      <div class="question" data-options='[{"label":"1. Just existed today","value":1},{"label":"2. Bits and pieces here and there","value":2},{"label":"3. Felt engaged and made some things happen","value":3},{"label":"4. Everything flowed naturally","value":4}]'>
-        How would you rate the overall sense of productivity today?
-      </div>
-      <div class="question" data-options='[{"label":"1. Heavy or down","value":1},{"label":"2. Bit off","value":2},{"label":"3. Light and content","value":3},{"label":"4. Up beat and positive","value":4}]'>
-        How would you rate your overall mood today?
-      </div>
+      <div class="onboarding-text">Shape of days</div>
+      <button id="collection-button" class="collection-btn">Collection</button>
+      <button id="start-button" class="start-btn">Start shaping</button>
     </div>
 
-    <script src="libraries/p5.Polar.js"></script>
-    <script src="sketch.js" defer></script>
+    <script src="onboarding.js" defer></script>
   </body>
 </html>

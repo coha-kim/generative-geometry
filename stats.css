@@ -4,6 +4,29 @@
   min-height: 100vh;
 }
 
+#home-btn {
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  font-family: 'Velvelyne', sans-serif;
+  font-size: 1.25rem;
+  color: #ffffff;
+  background-color: #000000;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  text-decoration: underline;
+  transition: all 0.2s ease;
+  z-index: 10000;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+#home-btn:hover {
+  opacity: 0.7;
+}
+
 #clear-btn {
   position: fixed;
   top: 100px;
@@ -14,7 +37,7 @@
   background-color: #000000;
   border: none;
   cursor: pointer;
-  padding: 15px 25px;
+  padding: 8px 16px;
   text-decoration: underline;
   transition: all 0.2s ease;
   z-index: 10000;

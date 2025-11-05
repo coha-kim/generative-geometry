@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const patternsGrid = document.getElementById('patterns-grid');
   const clearBtn = document.getElementById('clear-btn');
+  const homeBtn = document.getElementById('home-btn');
   
   // Get all saved patterns from localStorage
   function loadPatterns() {
@@ -41,6 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add click event listener to clear button
   if (clearBtn) {
     clearBtn.addEventListener('click', clearAllImages);
+  }
+  
+  // Add click event listener to home button
+  if (homeBtn) {
+    homeBtn.addEventListener('click', function() {
+      // Redirect to onboarding page
+      window.location.href = 'index.html';
+    });
   }
   
   loadPatterns();

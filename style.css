@@ -23,10 +23,23 @@ canvas {
 /* ---------TEXT STYLING--------------- */
 
 #questions-container {
-    display: none;
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .question {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
     font-family: 'Velvelyne', sans-serif;
     font-size: 2rem;
     color: #333;

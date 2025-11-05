@@ -25,7 +25,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(windowWidth, windowHeight);
   background("#F2F0F3");
   angleMode(RADIANS);
   rectMode(CORNERS);
@@ -358,5 +358,24 @@ function keyPressed() {
   // Keep keyboard functionality as backup
   if (!showQuestion && (key == "1" || key == "2" || key == "3" || key == "4")) {
     processInput(parseInt(key));
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  // Recreate buffer with new dimensions
+  buffer = createGraphics(width, height);
+  buffer.angleMode(RADIANS);
+  buffer.rectMode(CORNERS);
+  buffer.noStroke();
+  buffer.clear();
+  // Redraw center circle
+  drawCenterCircle();
+  // Update button positions
+  if (downloadPatternBtn) {
+    downloadPatternBtn.position(120, height / 2 + 60);
+  }
+  if (addToCollectionBtn) {
+    addToCollectionBtn.position(120, height / 2 + 120);
   }
 }

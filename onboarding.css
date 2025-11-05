@@ -105,19 +105,43 @@ body {
   letter-spacing: 0.05em;
 }
 
+.collection-btn {
+  position: absolute;
+  top: calc(45% + 3.5rem);
+  left: 60px;
+  transform: translateY(0);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 100;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 15px 40px;
+  margin-top: 24px;
+  text-decoration: underline 1px solid;
+  transition: all 0.2s ease;
+}
+
+.collection-btn:hover {
+  opacity: 0.7;
+}
+
 .start-btn {
   position: absolute;
-  bottom: 60px;
-  right: 60px;
-  font-family: 'Velvelyne', sans-serif;
-  font-size: 1.75rem;
+  top: 45%;
+  left: 60px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 3.5rem;
+  font-weight: 300;
   background-color: transparent;
   color: #ffffff;
   border: none;
   cursor: pointer;
   padding: 15px 40px;
   transition: all 0.2s ease;
-  text-decoration: underline;
+  /* text-decoration: underline 2px solid; */
+  text-decoration: none;
 }
 
 .start-btn:hover {
