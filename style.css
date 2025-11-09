@@ -1,7 +1,21 @@
+/* Add a CSS reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 @font-face {
   font-family: 'Velvelyne';
   src: url('assets/otf/Velvelyne-Regular.otf') format('opentype');
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Velvelyne';
+  src: url('assets/otf/Velvelyne-Book.otf') format('opentype');
+  font-weight: 350;
   font-style: normal;
 }
 
@@ -26,8 +40,8 @@ canvas {
     display: none !important;
     visibility: hidden !important;
     position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
+    top: 90px !important;
+    left: 48px !important;
     opacity: 0 !important;
     pointer-events: none !important;
 }
@@ -36,8 +50,8 @@ canvas {
     display: none !important;
     visibility: hidden !important;
     position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
+    top: 90px !important;
+    left: 48px !important;
     opacity: 0 !important;
     pointer-events: none !important;
     font-family: 'Velvelyne', sans-serif;
@@ -51,18 +65,39 @@ canvas {
     color: #333;
 }
 
+#question-text-display {
+    position: fixed;
+    top: 90px;
+    left: 48px;
+    z-index: 10;
+    display: none;
+    pointer-events: none;
+    font-family: 'Velvelyne', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: #000000;
+    max-width: 50vw;
+    line-height: 1;
+}
+
+#question-text-display.show {
+    display: block;
+}
+
 
 /* ---------BUTTONS STYLING--------------- */
 
 .answer-btn {
-  font-family: "Velvelyne";
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 200;
   font-size: 1.75rem;
   color: #000000;
   border: none;
   cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 0;
   transition: all 0.2s ease;
+  line-height: 1;
+  letter-spacing: -0.011em;
 }
 
 .answer-btn:hover {
@@ -86,17 +121,15 @@ canvas {
 }
 
 .download-btn {
-  font-family: "Velvelyne";
-  font-size: 1.25rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
   background-color: transparent;
   color: #000000;
   border: none;
   cursor: pointer;
-  padding: 10px 0;
+  padding: 0;
   transition: all 0.2s ease;
-}
-
-.download-btn:hover {
   text-decoration: underline;
 }
 
@@ -107,5 +140,108 @@ canvas {
   margin-bottom: 4px;
   padding-top: 26px;
   padding-left: 0px;
+}
+
+/* End screen text styling */
+#end-screen-text {
+  position: fixed;
+  top: 90px;
+  left: 48px;
+  z-index: 10;
+  display: none;
+  pointer-events: none;
+}
+
+#end-screen-text.show {
+  display: block;
+}
+
+#shape-of-text {
+  font-family: 'Velvelyne', sans-serif;
+  font-weight: 350;
+  font-size: 4.8125rem;
+  color: #000000;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+#date-text {
+  font-family: 'Velvelyne', sans-serif;
+  font-weight: 350;
+  font-size: 77px;
+  color: #000000;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+}
+
+#context-image-container {
+  position: fixed;
+  top: 318px;
+  left: 206px;
+  z-index: 10;
+  display: none;
+  pointer-events: none;
+}
+
+#context-image-container.show {
+  display: block;
+}
+
+#context-image-container img {
+  height: 83px;
+  width: auto;
+  display: block;
+}
+
+#read-your-day-text {
+  position: fixed;
+  top: 417px;
+  left: 206px;
+  z-index: 10;
+  display: none;
+  pointer-events: none;
+  font-family: 'Velvelyne', sans-serif;
+  font-weight: 350;
+  font-size: 34px;
+  color: #000000;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+#read-your-day-text.show {
+  display: block;
+}
+
+#description-text-container {
+  position: fixed;
+  top: 467px;
+  left: 206px;
+  z-index: 10;
+  display: none;
+  pointer-events: none;
+  width: 385px;
+}
+
+#description-text-container.show {
+  display: block;
+}
+
+.description-text {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.description-text:last-child {
+  margin-bottom: 0;
 }
 

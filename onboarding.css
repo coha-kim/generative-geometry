@@ -61,37 +61,37 @@ body {
 
 .shape-circle {
   z-index: 4;
-  width: 400px;
+  width: 280px;
   height: auto;
   margin-top: -20px;
-  margin-bottom: -240px;
+  margin-bottom: -168px;
   margin-right: 0;
 }
 
 .shape-ellipse {
   z-index: 3;
-  width: 360px;
+  width: 252px;
   height: auto;
   transform: rotate(-15deg);
-  margin-bottom: -200px;
-  margin-right: -40px;
+  margin-bottom: -140px;
+  margin-right: -28px;
 }
 
 .shape-triangle {
   z-index: 2;
-  width: 440px;
+  width: 308px;
   height: auto;
   transform: rotate(-15deg);
-  margin-bottom: -160px;
-  margin-right: -20px;
+  margin-bottom: -112px;
+  margin-right: -14px;
 }
 
 .shape-square {
   z-index: 1;
-  width: 480px;
+  width: 336px;
   height: auto;
   /* transform: rotate(45deg); */
-  margin-right: -60px;
+  margin-right: -42px;
 }
 
 .onboarding-text {
@@ -99,7 +99,7 @@ body {
   bottom: 60px;
   left: 60px;
   font-family: 'Velvelyne', sans-serif;
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: 300;
   color: #ffffff;
   letter-spacing: 0.05em;
@@ -107,7 +107,7 @@ body {
 
 .collection-btn {
   position: absolute;
-  top: calc(45% + 3.5rem);
+  top: calc(45% + 2.625rem);
   left: 60px;
   transform: translateY(0);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -117,7 +117,6 @@ body {
   color: #ffffff;
   border: none;
   cursor: pointer;
-  padding: 15px 40px;
   margin-top: 24px;
   text-decoration: underline 1px solid;
   transition: all 0.2s ease;
@@ -132,13 +131,12 @@ body {
   top: 45%;
   left: 60px;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 3.5rem;
-  font-weight: 300;
+  font-size: 2.7rem;
+  font-weight: 100;
   background-color: transparent;
   color: #ffffff;
   border: none;
   cursor: pointer;
-  padding: 15px 40px;
   transition: all 0.2s ease;
   /* text-decoration: underline 2px solid; */
   text-decoration: none;

@@ -64,6 +64,7 @@
   justify-content: center;
   aspect-ratio: 1;
   width: 100%;
+  position: relative;
 }
 
 .pattern-item img {
@@ -71,6 +72,26 @@
   height: 100%;
   object-fit: contain;
   display: block;
+}
+
+.pattern-date {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Velvelyne', sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+  background-color: rgba(242, 240, 243, 0.95);
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.pattern-item:hover .pattern-date {
+  opacity: 1;
 }
 
 .empty-state {

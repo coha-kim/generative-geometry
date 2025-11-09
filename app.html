@@ -41,6 +41,8 @@
         setTimeout(hideQuestions, 50);
       })();
     </script>
+    <div id="question-text-display"></div>
+    
     <div id="questions-container">
       <div class="question" data-options='[{"label":"1. Restless and sluggish","value":1},{"label":"2. Wish I&apos;d moved more or less","value":2},{"label":"3. About right for me","value":3},{"label":"4. What I needed","value":4}]'>
         How satisfied are you with the level of physical activity today?
@@ -60,6 +62,22 @@
       <div class="question" data-options='[{"label":"1. Heavy or down","value":1},{"label":"2. Bit off","value":2},{"label":"3. Light and content","value":3},{"label":"4. Up beat and positive","value":4}]'>
         How would you rate your overall mood today?
       </div>
+    </div>
+
+    <!-- End screen text elements -->
+    <div id="end-screen-text">
+      <p id="shape-of-text">Shape of</p>
+      <p id="date-text"></p>
+    </div>
+
+    <div id="context-image-container">
+      <img src="assets/context-image.svg" alt="Context image" />
+    </div>
+
+    <div id="read-your-day-text">Read your day</div>
+
+    <div id="description-text-container">
+      <p class="description-text">Each answer added a layer to your pattern, shaping the day. <br>The stronger you felt, the more edges appeared, morphing from circles to squares</p>
     </div>
 
     <script src="libraries/p5.Polar.js"></script>

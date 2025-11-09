@@ -26,7 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
       img.src = pattern.imageData;
       img.alt = `Pattern from ${pattern.date}`;
       
+      const dateLabel = document.createElement('div');
+      dateLabel.className = 'pattern-date';
+      dateLabel.textContent = pattern.date;
+      
       patternItem.appendChild(img);
+      patternItem.appendChild(dateLabel);
       patternsGrid.appendChild(patternItem);
     });
   }
